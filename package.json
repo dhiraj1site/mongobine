@@ -1,0 +1,26 @@
+{
+  "name": "mongobine",
+  "version": "1.0.0",
+  "description": "easy wrapper around mongo js driver supporting basic crud operations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhiraj1site/mongobine.git"
+  },
+  "keywords": [
+    "mongodb",
+    "wrapper"
+  ],
+  "author": "dhiraj1site",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhiraj1site/mongobine/issues"
+  },
+  "homepage": "https://github.com/dhiraj1site/mongobine#readme",
+  "dependencies": {
+    "mongodb": "^3.6.9"
+  }
+}
