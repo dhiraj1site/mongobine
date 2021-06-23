@@ -1,5 +1,6 @@
 const connection = require('./connection');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectIdWrapper = require('mongodb').ObjectID;
 const assert = require('assert');
 
 class MongoBine {
@@ -18,8 +19,12 @@ class MongoBine {
   }
 
   update(target, updates) {
+    var correctTarget;
+    if(Object.keys(target)[0] == "_id") {
+      correctTarget = {_id: new ObjectIdWrapper(target._id)};
+    }
     const updateObject = {
-        target: target, 
+        target: correctTarget || target, 
         updates: updates
     };
     this.type = 'update';

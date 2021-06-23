@@ -1,6 +1,6 @@
 {
   "name": "mongobine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "easy wrapper around mongo js driver supporting basic crud operations",
   "main": "index.js",
   "scripts": {

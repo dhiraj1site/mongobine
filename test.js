@@ -11,7 +11,7 @@ mongo.insert({email: "myemail@email.com"});
 mongo.find({});
 
 //update
-mongo.update({email : "myemail@email.com"}, {code: 23}).then(res => {
+mongo.update({email : "myemail@email.com"}, {code: 2233}).then(res => {
     console.log('got the update response', res);
 });
 
