@@ -1,4 +1,5 @@
 # MongoBine
+Mongobine is a simple wrapper around javascript mongodb driver. It offers basic CRUD operations
 
 # Installation
 
@@ -6,9 +7,7 @@
 
 # How to use
 
-Mongobine is a simple wrapper around javascript mongodb driver. It offers basic CRUD operations
-
-```
+```node
 var mongobine = require('mongobine');
 
 // create a new mongo instance passing your connection details
