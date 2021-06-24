@@ -7,6 +7,7 @@ class MongoBine {
   constructor(_construct) {
     const { collection, url, document } = _construct;
     this.collection = collection || 'users';
+    this.skipTimeStamp = _construct.skipTimeStamp || false;
     this.url = url || 'mongodb://localhost:27017';
     this.client = new MongoClient(this.url, {useUnifiedTopology: true});
     this.dbName = document || 'binebox';
@@ -28,13 +29,20 @@ class MongoBine {
         updates: updates
     };
     this.type = 'update';
-    const {client, dbName, collection, type} = this;
+    const {client, dbName, collection, type, skipTimeStamp} = this;
+    if(!skipTimeStamp) {
+      insertObject.dateUpdated = Date.now();
+    }
     return connection(client, assert, dbName, collection, type, updateObject);
   };
 
   insert(insertObject) {
     this.type = 'insert';
-    const {client, dbName, collection, type} = this;
+    const {client, dbName, collection, type, skipTimeStamp} = this;
+    if(!skipTimeStamp) {
+      insertObject.dateCreated = Date.now();
+      insertObject.dateUpdated = Date.now();
+    }
     return connection(client, assert, dbName, collection, type, insertObject);
   };
 
