@@ -31,7 +31,7 @@ class MongoBine {
     this.type = 'update';
     const {client, dbName, collection, type, skipTimeStamp} = this;
     if(!skipTimeStamp) {
-      insertObject.dateUpdated = Date.now();
+      updateObject.dateUpdated = Date.now();
     }
     return connection(client, assert, dbName, collection, type, updateObject);
   };
