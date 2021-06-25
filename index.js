@@ -15,6 +15,9 @@ class MongoBine {
     
   find(findObject) {
     this.type = 'find';
+    if(Object.keys(findObject)[0] == "_id") {
+      findObject = {_id: new ObjectIdWrapper(findObject._id)};
+    }
     const {client, dbName, collection, type} = this;
     return connection(client, assert, dbName, collection, type, findObject);
   }
