@@ -6,14 +6,15 @@ var mongo = new mongobine({collection: 'users', skipTimeStamp: false});
 //CRUD operations for mongodb
 
 //create
-mongo.insert({email: "testinfinal"});
+mongo.insert({email: "myemail@email.com"});
 
 // //retrieve
-mongo.find({});
+mongo.findOne({email: "dhiraj201site@gmail.com"}).then(res => {
+    console.log('find one result', res);
+});
 
 // //update
 mongo.update({email : "myemail@email.com"}, {code: 2233}).then(res => {
-    console.log('got the update response', res);
 });
 
 // //delete

@@ -22,6 +22,15 @@ class MongoBine {
     return connection(client, assert, dbName, collection, type, findObject);
   }
 
+  findOne(findObject) {
+    this.type = 'findOne';
+    if(Object.keys(findObject)[0] == "_id") {
+      findObject = {_id: new ObjectIdWrapper(findObject._id)};
+    }
+    const {client, dbName, collection, type} = this;
+    return connection(client, assert, dbName, collection, type, findObject);
+  }
+
   update(target, updates) {
     var correctTarget;
     if(Object.keys(target)[0] == "_id") {

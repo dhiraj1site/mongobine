@@ -9,8 +9,16 @@ resolvers.findDocument = (_collection, assert,  db, object, callback) => {
     });
 };
 
+resolvers.findOneDocument = (_collection, assert,  db, object, callback) => {
+  const collection = db.collection(_collection);
+  collection.findOne(object , (err, docs) => {
+      assert.strictEqual(err, null);
+      console.log(docs);
+      callback(docs);
+  });
+};
+
 resolvers.updateDocument = (_collection, assert, db, updateObject, callback) => {
-  console.log('what is', updateObject);
     const collection = db.collection(_collection);
     var setObject = { $set: updateObject.updates };
     collection.updateOne(updateObject.target, setObject , (err, result)  => {
