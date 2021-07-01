@@ -15,17 +15,28 @@ class MongoBine {
     
   find(findObject) {
     this.type = 'find';
-    if(Object.keys(findObject)[0] == "_id") {
-      findObject = {_id: new ObjectIdWrapper(findObject._id)};
+    try {
+      if(Object.keys(findObject)[0] == "_id") {
+        findObject = {_id: new ObjectIdWrapper(findObject._id)};
+      }
     }
+    catch(err) {
+      return Promise.reject('Invalid object id ' + err);
+    }
+
     const {client, dbName, collection, type} = this;
     return connection(client, assert, dbName, collection, type, findObject);
   }
 
   findOne(findObject) {
     this.type = 'findOne';
-    if(Object.keys(findObject)[0] == "_id") {
-      findObject = {_id: new ObjectIdWrapper(findObject._id)};
+    try {
+      if(Object.keys(findObject)[0] == "_id") {
+        findObject = {_id: new ObjectIdWrapper(findObject._id)};
+      }
+    }
+    catch(err) {
+      return Promise.reject('Invalid object id ' + err);
     }
     const {client, dbName, collection, type} = this;
     return connection(client, assert, dbName, collection, type, findObject);
@@ -33,8 +44,13 @@ class MongoBine {
 
   update(target, updates) {
     var correctTarget;
-    if(Object.keys(target)[0] == "_id") {
-      correctTarget = {_id: new ObjectIdWrapper(target._id)};
+    try {
+      if(Object.keys(findObject)[0] == "_id") {
+        correctTarget = {_id: new ObjectIdWrapper(findObject._id)};
+      }
+    }
+    catch(err) {
+      return Promise.reject('Invalid object id ' + err);
     }
     const updateObject = {
         target: correctTarget || target, 
