@@ -2,6 +2,7 @@ const connection = require('./connection');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectIdWrapper = require('mongodb').ObjectID;
 const assert = require('assert');
+const helpers = require('./helpers');
 
 class MongoBine {
   constructor(_construct) {
@@ -13,47 +14,33 @@ class MongoBine {
     this.dbName = document || 'binebox';
   }
     
-  find(findObject) {
+  find(findObject, persist = false) {
     this.type = 'find';
-    try {
-      if(Object.keys(findObject)[0] == "_id") {
-        findObject = {_id: new ObjectIdWrapper(findObject._id)};
-      }
+    var query = helpers.resolveQuery(findObject);
+    if(query.type === 0) {
+      return Promise.reject(query.res);
     }
-    catch(err) {
-      return Promise.reject('Invalid object id ' + err);
-    }
-
     const {client, dbName, collection, type} = this;
-    return connection(client, assert, dbName, collection, type, findObject);
+    return connection(client, assert, dbName, collection, type, query.res, persist);
   }
 
-  findOne(findObject) {
+  findOne(findObject, persist = false) {
     this.type = 'findOne';
-    try {
-      if(Object.keys(findObject)[0] == "_id") {
-        findObject = {_id: new ObjectIdWrapper(findObject._id)};
-      }
-    }
-    catch(err) {
-      return Promise.reject('Invalid object id ' + err);
+    var query = helpers.resolveQuery(findObject);
+    if(query.type === 0) {
+      return Promise.reject(query.res);
     }
     const {client, dbName, collection, type} = this;
-    return connection(client, assert, dbName, collection, type, findObject);
+    return connection(client, assert, dbName, collection, type, query.res, persist);
   }
 
-  update(target, updates) {
-    var correctTarget;
-    try {
-      if(Object.keys(findObject)[0] == "_id") {
-        correctTarget = {_id: new ObjectIdWrapper(findObject._id)};
-      }
-    }
-    catch(err) {
-      return Promise.reject('Invalid object id ' + err);
+  update(target, updates, persist = false) {
+    var query = helpers.resolveQuery(target);
+    if(query.type === 0) {
+      return Promise.reject(query.res);
     }
     const updateObject = {
-        target: correctTarget || target, 
+        target: query.res, 
         updates: updates
     };
     this.type = 'update';
@@ -61,23 +48,27 @@ class MongoBine {
     if(!skipTimeStamp) {
       updateObject.dateUpdated = Date.now();
     }
-    return connection(client, assert, dbName, collection, type, updateObject);
+    return connection(client, assert, dbName, collection, type, updateObject, persist);
   };
 
-  insert(insertObject) {
+  insert(insertObject, persist = false) {
     this.type = 'insert';
     const {client, dbName, collection, type, skipTimeStamp} = this;
     if(!skipTimeStamp) {
       insertObject.dateCreated = Date.now();
       insertObject.dateUpdated = Date.now();
     }
-    return connection(client, assert, dbName, collection, type, insertObject);
+    return connection(client, assert, dbName, collection, type, insertObject, persist);
   };
 
-  delete(deleteObject) {
+  delete(deleteObject, persist = false) {
     this.type = 'delete';
+    var query = helpers.resolveQuery(deleteObject);
+    if(query.type === 0) {
+      return Promise.reject(query.res);
+    }
     const {client, dbName, collection, type} = this;
-    return connection(client, assert, dbName, collection, type, deleteObject);
+    return connection(client, assert, dbName, collection, type, query.res, persist);
   };
 
 }
