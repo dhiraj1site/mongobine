@@ -21,7 +21,7 @@ helpers.resolveQuery = function(obj) {
     _obj = obj;
     if(Object.keys(obj)[0] == "_id") {
         try {
-            _send = new ObjectIdWrapper(obj._id);
+            _send = {_id: new ObjectIdWrapper(obj._id) };
         }
         catch(err) {
             return {
